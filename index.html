@@ -1,0 +1,567 @@
+<html >
+    <head>
+      <title>VAK questionaire</title>
+        <meta charset="utf-8"/>
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
+        <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+        <link href = 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' rel = 'stylesheet'>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.5.14/vuetify.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <script src="https://use.fontawesome.com/69b4301ba7.js"></script>
+        <style>
+.form-radio
+{
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;
+     display: inline-block;
+     position: relative;
+     background-color: #f1f1f1;
+     color:black;
+     top: 1px;
+     height: 15px;
+     width: 15px;
+     border-radius: 30px;
+     border: #4bafe8 solid 1px;
+     cursor: pointer;     
+     
+     outline: none;
+}
+.form-radio:checked::before
+{
+     position: absolute;
+     font: 13px/1 'Open Sans', sans-serif;
+     left: 2px;
+     content: '\02143';
+     transform: rotate(40deg);
+}
+.form-radio:hover
+{
+     background-color: #289448;
+}
+.form-radio:checked
+{
+     background-color: #4bafe8;
+}
+label
+{
+     font: 15px/1.7 'Open Sans', sans-serif;
+     color: #333;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+     cursor: pointer;
+} 
+/*anchor spin speed */
+.slow-spin {
+  -webkit-animation: fa-spin 10s infinite linear;
+  animation: fa-spin 10s infinite linear;
+}
+/* remove scroll bar */
+html {overflow-y: auto}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to  {
+  opacity: 0;
+}
+/*LIST-ITEM ANIMATION*/
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.fullscreen {
+  width: 100%;
+  height: 100%;
+  background-image: url('blue.jpg');
+  background-repeat: repeat;
+  position: absolute;
+  text-align: center;
+  vertical-align: center;
+}
+.kuehne-color {
+  color:  #4bafe8;
+}
+.img_center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  
+}
+th, td {
+  text-align: left;
+  padding: 8px;
+  text-align: center; 
+  vertical-align: middle;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+
+
+/*MOBILE DEVICES DESIGN */
+
+@media all and (min-width:569px) and (max-width: 1024px) {
+  /* put your css styles in here */
+
+.qNumber {
+  color:red;
+}
+.heading {
+  margin-bottom: 10% !important;
+}
+.questionContent {
+ margin-bottom: 10% !important;
+}
+h2, table, tr, td, tbody {
+  margin-left: 0% !important;
+  margin-right: 0% !important;
+  width: 100% !important;
+  font-size: 50px !important;
+}
+
+tr, tbody{
+  align-content:left !important;
+  text-align: left;
+  text-align: left;
+}
+
+.form-radio
+{
+     
+     height: 48px;
+     width: 48px;
+     border-radius: 48px;
+     border: #4bafe8 solid 4px;
+     cursor: pointer;     
+     
+     outline: none;
+}
+.form-radio:checked::before
+{
+     position: absolute;
+     font: 40px/1 'Open Sans', sans-serif;
+     left: 6px;
+     content: '\02143';
+     transform: rotate(40deg);
+}
+button {
+  font-size: 40px !important;
+  min-height: 60px;
+  min-width: 50%;
+}
+.response_text {
+  margin-left:0% !important;
+}
+}
+
+@media all and (min-width:0px) and (max-width: 568px) {
+  /* put your css styles in here */
+}
+        </style>
+      </head>
+<body >
+  <div id = body></div>
+  <div id="app">
+      <v-app>
+          <v-content>
+            <v-container fluid>       
+                <!--
+<video width="320" height="240" autoplay="autoplay" dir="ltr" style = 'display: block; margin: 0 auto'>   
+                  <source src="https://connections.mykn.community/files/basic/anonymous/api/library/d598c3ce-d3c8-49b0-a6c8-52567602bcdd/document/6c9789a6-3674-4ac8-a3d8-2f06bd89caae/media/SampleVideo_1280x720_2mb.mp4?logDownload=true&downloadType=view" type="video/mp4">  
+              </video>
+                -->
+<div id = 'modal-container' class="modal-container"></div>
+                    <!-- index is used to check with current question index -->
+                <div v-for="(question, index) in quiz.questions">
+                  <!-- Hide all questions, show only the one with index === to current question index -->
+                  <div v-show="index === questionIndex">
+                    <div class='heading text-md-center text-sm-center  text-xs-right' style = 'border: #4bafe8 solid 1px; margin-bottom: 40px; border-radius:30px'>
+                      <h1 > {{ quiz.title }}</h1>
+                      <br>
+                      <h2 class = 'qNumber'>Question {{questionIndex +1}} of 5</h2>
+                    </div>
+                                        <v-btn  color="#4bafe8"  v-if="questionIndex >= 1" v-on:click="prev" style = 'color:white;display: block; min-width: 15%;border-radius: 15px;' >
+                                                <span><i class="fas fa-long-arrow-alt-left"> </i> Return to previous question</span>
+                          </v-btn>
+                          <br>
+                    <h2 class="text-md-center text-sm-center text-xs-center questionContent" style = 'margin-bottom: 40px; margin-left: 25%; margin-right:25%'>{{ question.text }}</h2>
+                    
+                    <div class="text-md-left text-sm-left  text-xs-left questionReplyWrap" style = 'align-content:center'> 
+
+
+                      <table style = 'width:50%; margin-left:25%;'>
+                        <tr v-for="response in question.responses" style = 'align-content: left; width:50%;'> 
+                          <td style = 'align-content: left;'> 
+
+                              
+
+                             <p  class = 'response_text' style = 'text-align: left !important; margin-left:25%'>
+                                <input type="radio" class = 'form-radio'
+                                v-bind:value="response.audial"
+                               v-bind:name="index"
+                               v-model="userAudial[index]"
+                               
+                               >
+                              {{response.text}}</p>
+                          </td>  
+                        
+                        </tr>
+                      </table>
+                  </div>
+             
+                    <!-- The two navigation buttons -->
+                    <!-- Note: prev is hidden on first question -->
+                    
+                      
+                    
+                    <div class= 'button-wrapper text-md-center text-sm-center  text-xs-center' id = 'button_parent' >
+
+
+                    <!-- 'next' button. For loading animation it is constructed as modal window opener-->
+                <div id="loading-modal">
+                    <v-layout row justify-center>
+                      <v-dialog v-model="dialog">
+                        <template v-slot:activator="{ on }">
+                          <v-btn dark v-on="on" color="#4bafe8" style = 'width:50%;border-radius: 15px;margin-top:25px'>Next question</v-btn>
+                        </template>
+                        <v-card
+                        color="primary"
+                        dark
+                      >
+
+                        <v-card-text>
+                          <center><h2>Please wait, your reply is being processed by the system...</h2></center> <br><br>
+                         
+                          <v-progress-linear
+                            indeterminate
+                            color="white"
+                            class="mb-0"
+                          ></v-progress-linear>
+                        </v-card-text>You can test the project at https://pjotrleshkin.github.io/myknvark/</v-card-text>
+                      </v-card>
+                      </v-dialog>
+                    </v-layout>
+                </div>
+              </div>
+
+                  </div>
+                </div>
+                <div v-show="questionIndex === quiz.questions.length" >
+                    <div class="text-md-center text-sm-center  text-xs-center" style = 'border: #4bafe8 solid 15px;  border-radius: 20px; margin-top: 20px'> 
+                  <h2>
+                  Congratulations! You had successfully finished the quiz.
+                </h2>
+                <v-img
+                  src="kuhnja.jpg"
+                  aspect-ratio="1"
+                  max-width="500"
+                  max-height="300"
+                  class = 'img_center'
+                  
+                ></v-img>
+                <h3 class = 'text-md-center text-sm-center  text-xs-center'> Your learning style is </h3>
+                 <h1 class = 'kuehne-color text-md-center text-sm-center  text-xs-center'>Visual</h1>
+            </div>
+            <div class="text-md-center text-sm-center  text-xs-center">
+              <p style= 'margin-top:30px; margin-bottom:10%;'>For more sophisticated results please click
+                <button v-on:click="isHidden = !isHidden" style = 'color: #4bafe8'> here: </button>
+               </p>
+            </div>             
+            <div>
+                   
+                    
+                    <div v-if="!isHidden" style = 'margin-bottom:10%'>
+                      
+                            <p class="text-md-center text-sm-center  text-xs-center">
+                                    <table>
+                                      <tr>
+                                        <th>Reply matrix dimension</th>
+                                        <th>Replies number</th>
+                                      
+                                      </tr>
+                                      <tr>
+                                        <td>Audial</td>
+                                        <td>{{Audialscore()}} / {{ quiz.questions.length}}</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Visual</td>
+                                        <td>{{Visualscore()}} / {{ quiz.questions.length }}</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Kinestetical</td>
+                                        <td>{{Kinesteticalscore()}} / {{ quiz.questions.length }}</td>
+                                      </tr>
+                                      </table>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                   
+                                  </p>
+                                  <table>
+                                    <tr>
+                                      <th>Question number</th>
+                                      <th>Reply value selected</th>
+                                    <th>Chronbach alpha of reply</th>
+                                    </tr>
+                                    <tr>
+                                      <td>1st</td>
+                                      <td>{{Totalscore()[0]}}</td>
+                                      <td>{{Cronbach()[0][userAudial[0]]}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>2nd</td>
+                                      <td>{{Totalscore()[1]}}</td>
+                                      <td>{{Cronbach()[1][userAudial[1]]}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>3rd</td>
+                                      <td>{{Totalscore()[2]}}</td>
+                                      <td>{{Cronbach()[2][userAudial[2]]}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>4th</td>
+                                      <td>{{Totalscore()[3]}}</td>
+                                      <td>{{Cronbach()[3][userAudial[3]]}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>5th</td>
+                                      <td>{{Totalscore()[4]}}</td>
+                                      <td>{{Cronbach()[4][userAudial[4]]}}</td>
+                                    </tr>
+                                  </table></div>
+                <!--
+                 
+                  -->
+</div>
+                    <v-footer
+                    
+                    padless
+                    absolute
+                    dark
+                  >
+                    <v-layout
+                      justify-center
+                      wrap
+                    >
+
+                       <p style = 'text-align: center'>Thank you for completing the questionaire. You will be  redirected to the course page after 5 seconds, or you can click <a href = '' style = 'color:#4bafe8'>here</a>.</p> 
+                       {{Redirect()}}
+                     
+                    </v-layout>
+                  </v-footer>
+                      
+
+                   
+
+               
+
+            </v-container>
+          </v-content>
+          
+         </div>
+         
+   </v-app>
+  </div>
+  
+  <!-- Load Vue script -->
+  <script src="https://vuejs.org/js/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.5.14/vuetify.js"></script>
+  <!-- On load, init Vue -->
+  <script>
+ 
+    window.onload=function(){
+      // Create a quiz object with a title and 5 questions.
+      // A question has 3 answers.
+      var quiz = {
+        title: 'Visual Audial Kinestetical Test',
+        questions: [
+        
+          {
+            text: "A group of tourists want to learn about the parks or wildlife reserves in your area. You would:",
+            responses: [
+              {text: 'talk about, or arrange a talk for them about parks or wildlife reserves.', audial:1}, 
+              {text: 'show them maps and internet pictures.', audial:2 }, 
+              {text: 'take them to a park or wildlife reserve and walk with them.', audial:3}
+            ]
+          }, {
+            text: "A website has a video showing how to make a special graph. There is a person speaking, some lists and words describing what to do and some diagrams. You would learn most from:",
+            responses: [
+            {text: 'listening.', audial:1}, 
+              {text: 'seeing the diagrams.', audial: 2}, 
+              {text: 'watching the actions.', audial: 3}
+            ]
+          },
+          {
+            text: "Do you prefer a teacher or a presenter who uses:",
+            responses: [
+            {text: 'question and answer, talk, group discussion, or guest speakers.', audial:1}, 
+              {text: 'diagrams, charts or graphs.', audial: 2}, 
+              {text: 'demonstrations, models or practical sessions.', audial: 3}
+            ]
+          }, 
+          {
+            text: "Other than price, what would most influence your decision to buy a new non-fiction book?",
+            responses: [
+            {text: 'A friend talks about it and recommends it.', audial:1}, 
+              {text: 'The way it looks is appealing.', audial: 2}, 
+              {text: 'It has real-life stories, experiences and examples.', audial: 3}
+            ]
+          }, 
+          {
+            text: "Remember a time when you learned how to do something new. Avoid choosing a physical skill, eg. riding a bike. You learned best by:",
+            responses: [
+            {text: 'listening to somebody explaining it and asking questions.', audial:1}, 
+              {text: 'diagrams, maps, and charts - visual clues.', audial: 2}, 
+              {text: 'watching a demonstration.', audial: 3}
+            ]
+          }, 
+          
+        ]
+      };
+            
+     var questionaireApp =  new Vue({
+        el: '#app',
+        data: {
+          quiz: quiz,
+          // Store current question index
+          questionIndex: 0,
+          // An array created with "false" values for each question
+          // It means: "did the user answered correctly to the question n?" "no".
+          userAudial:Array(quiz.questions.length).fill(2),
+          dialog: false,
+            isHidden: true,
+      
+       // questions from questionaire - 5,2,13,11,7
+       // replies go in following way:
+       // 0th - Read
+       // 1st - Audial
+       // 2nd - Visual
+       // 3rd - kinestetical
+      firstQuestionValues: [0.71,0.62,0.62,0.79],
+       secondQuestionValues: [0.73,0.59,0.65,0.78],
+       thirdQuestionValues: [0.77,0.67,0.62,0.79],
+       fourthQuestionValues: [0.74,0.59,0.60,0.8],
+       fifthQuestionValues: [0.8,0.67,0.65,0.79]
+        },
+        watch: {
+    dialog (val) {
+      if (!val) return
+      setTimeout(() => (this.dialog = false), 2200);
+      setTimeout(() => (this.questionIndex++), 2000);
+    }
+  },
+        // The view will trigger these methods on click
+        methods: {
+            Redirect: function (){
+            var that = this;
+            qindex = that.questionIndex;
+            console.log(qindex);
+            if(qindex === 5){
+                setTimeout(function(){window.location='https://sync0n.github.io/course_desc.html'},30000);
+            }
+           // 
+          },
+          // Go to next question
+          next: function() {
+/* create loading screen*/
+            document.getElementById("modal-container").innerHTML = '<v-dialog  v-model="dialog" hide-overlay persistent width="300"> <v-card color="primary" dark> <v-card-text> Please stand by <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear> </v-card-text> </v-card> </v-dialog>';
+        
+ /* remove loading screen after some time  and increment question index*/ 
+            var _this = this;
+            setTimeout(function(){document.getElementById('modal-container').innerHTML = '';_this.questionIndex++},2000);
+          
+            
+          },
+          // Go to previous question
+          prev: function() {
+            this.questionIndex--;
+          },
+          // Return first questions count in userResponses
+          Audialscore: function() {
+            return this.userAudial.filter(function(val) {
+               return val ===1}).length;
+          },
+          // Return second questions count in userResponses
+          Visualscore: function() {
+            return this.userAudial.filter(function(val) {
+               return val ===2}).length;
+          },
+          Kinesteticalscore: function() {
+            return this.userAudial.filter(function(val) {
+               return val ===3}).length;
+          },
+          Totalscore: function() {
+            return [this.userAudial[0],this.userAudial[1],this.userAudial[2],this.userAudial[3],this.userAudial[4]];
+            
+          },
+          randomIndex: function () {
+      return Math.floor(Math.random() * this.items.length)
+    },
+    add: function () {
+      this.items.splice(this.randomIndex(), 0, this.nextNum++);
+      this.items.splice(this.randomIndex(), 1)
+    },
+    remove: function () {
+      this.items.splice(this.randomIndex(), 1)
+    },
+    Cronbach: function (){
+      
+      return [this.firstQuestionValues,this.secondQuestionValues,this.thirdQuestionValues,this.fourthQuestionValues,this.fifthQuestionValues];
+    },
+    FilterFirst: function() {
+      //let repliesArray1 =  {'one':this.userAudial[0], 'two':this.userAudial[1],'three':this.userAudial[2],'four':this.userAudial[3],'five':this.userAudial[4]};
+           // return repliesArray1.filter(function(val) {
+            //   return val ===1});
+var repliesMegaArray = [this.userAudial[0],this.userAudial[1],this.userAudial[2],this.userAudial[3],this.userAudial[4]];
+if (repliesMegaArray[0] === 1) {
+  var firstQAlpha =  firstQuestionValues[1];
+}
+if (repliesMegaArray[0] === 2) {
+  var firstQAlpha =  firstQuestionValues[1];
+}
+if (repliesMegaArray[0] === 3) {
+  var firstQAlpha =  firstQuestionValues[1];
+}
+/*
+elseif(repliesMegaArray[0] === 2){var firstQAlpha =  firstQuestionValues[2] }
+elseif(repliesMegaArray[0] === 3){ var firstQAlpha =  firstQuestionValues[3] }
+else{ var firstQAlpha =  'error' };
+*/
+return firstQAlpha;
+          },
+    FinalResult: function () {
+      let repliesArray =  {'one':this.userAudial[0], 'two':this.userAudial[1],'three':this.userAudial[2],'four':this.userAudial[3],'five':this.userAudial[4]};
+      let AudialValues;
+      let VisualValues;
+      let KinestValues;
+      
+      let alphaValues = [this.firstQuestionValues[this.userAudial[0]],this.secondQuestionValues[this.userAudial[1]]];
+      //var result = repliesArray.filter(reply => reply = 1);
+       return repliesArray['one'];
+    }
+    //Methods end here
+          },
+
+
+      });
+    }
+  </script>
+</body>
