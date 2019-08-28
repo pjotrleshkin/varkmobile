@@ -161,16 +161,30 @@ tr, tbody{
      content: '\02143';
      transform: rotate(40deg);
 }
-button {
-  font-size: 40px !important;
+#prev_question{
+  font-size: 25px;
   min-height: 60px;
-  min-width: 50%;
+  max-width: 50%;
+  margin-bottom: 5%;
 }
+#next_question {
+  font-size: 40px !important;
+  margin-top:15% !important;
+  width: 100% !important;
+  height:100px !important;
+}
+
+
 .response_text {
   margin-left:0% !important;
 }
 }
-
+.test_result{
+  font-size: 50px;
+}
+.end_style {
+  font-size: 50px;
+}
 @media all and (min-width:0px) and (max-width: 568px) {
   /* put your css styles in here */
 }
@@ -192,12 +206,12 @@ button {
                 <div v-for="(question, index) in quiz.questions">
                   <!-- Hide all questions, show only the one with index === to current question index -->
                   <div v-show="index === questionIndex">
-                    <div class='heading text-md-center text-sm-center  text-xs-right' style = 'border: #4bafe8 solid 1px; margin-bottom: 40px; border-radius:30px'>
+                    <div class='heading text-md-center text-sm-center  text-xs-center' style = 'border: #4bafe8 solid 1px; margin-bottom: 40px; border-radius:30px'>
                       <h1 > {{ quiz.title }}</h1>
                       <br>
                       <h2 class = 'qNumber'>Question {{questionIndex +1}} of 5</h2>
                     </div>
-                                        <v-btn  color="#4bafe8"  v-if="questionIndex >= 1" v-on:click="prev" style = 'color:white;display: block; min-width: 15%;border-radius: 15px;' >
+                                        <v-btn id = 'prev_question' color="#4bafe8"  v-if="questionIndex >= 1" v-on:click="prev" style = 'color:white;display: block; min-width: 15%;border-radius: 15px;' >
                                                 <span><i class="fas fa-long-arrow-alt-left"> </i> Return to previous question</span>
                           </v-btn>
                           <br>
@@ -239,7 +253,7 @@ button {
                     <v-layout row justify-center>
                       <v-dialog v-model="dialog">
                         <template v-slot:activator="{ on }">
-                          <v-btn dark v-on="on" color="#4bafe8" style = 'width:50%;border-radius: 15px;margin-top:25px'>Next question</v-btn>
+                          <v-btn id = 'next_question' dark v-on="on" color="#4bafe8" style = 'width:50%;border-radius: 15px;margin-top:25px'>Next question</v-btn>
                         </template>
                         <v-card
                         color="primary"
@@ -276,13 +290,12 @@ button {
                   class = 'img_center'
                   
                 ></v-img>
-                <h3 class = 'text-md-center text-sm-center  text-xs-center'> Your learning style is </h3>
-                 <h1 class = 'kuehne-color text-md-center text-sm-center  text-xs-center'>Visual</h1>
+                <h3  class = 'text-md-center text-sm-center  text-xs-center test_result'> Your learning style is </h3>
+                 <h1 class = 'kuehne-color text-md-center text-sm-center  text-xs-center end_style'>Visual</h1>
             </div>
             <div class="text-md-center text-sm-center  text-xs-center">
-              <p style= 'margin-top:30px; margin-bottom:10%;'>For more sophisticated results please click
-                <button v-on:click="isHidden = !isHidden" style = 'color: #4bafe8'> here: </button>
-               </p>
+              <p  class = 'test_result' style= 'margin-top:30px; margin-bottom:10%;'>For more sophisticated results please click
+                <button v-on:click="isHidden = !isHidden" style = 'color: #4bafe8'> here</button>:</p>
             </div>             
             <div>
                    
