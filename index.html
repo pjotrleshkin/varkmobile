@@ -2,7 +2,6 @@
     <head>
       <title>VAK questionaire</title>
         <meta charset="utf-8"/>
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
@@ -278,6 +277,7 @@ tr, tbody{
                   </div>
                 </div>
                 <div v-show="questionIndex === quiz.questions.length" >
+                    {{CalculateResults()}}
                     <div class="text-md-center text-sm-center  text-xs-center" style = 'border: #4bafe8 solid 15px;  border-radius: 20px; margin-top: 20px'> 
                   <h2>
                   Congratulations! You had successfully finished the quiz.
@@ -291,9 +291,10 @@ tr, tbody{
                   
                 ></v-img>
                 <h3  class = 'text-md-center text-sm-center  text-xs-center test_result'> Your learning style is </h3>
-                 <h1 class = 'kuehne-color text-md-center text-sm-center  text-xs-center end_style'>Visual</h1>
+                 <h1 class = 'kuehne-color text-md-center text-sm-center  text-xs-center end_style' id = 'learnig_style_value'></h1>
             </div>
             <div class="text-md-center text-sm-center  text-xs-center">
+               
               <p  class = 'test_result' style= 'margin-top:30px; margin-bottom:10%;'>For more sophisticated results please click
                 <button v-on:click="isHidden = !isHidden" style = 'color: #4bafe8'> here</button>:</p>
             </div>             
@@ -461,7 +462,7 @@ tr, tbody{
           userAudial:Array(quiz.questions.length).fill(2),
           dialog: false,
             isHidden: true,
-      
+                 
        // questions from questionaire - 5,2,13,11,7
        // replies go in following way:
        // 0th - Read
@@ -472,7 +473,9 @@ tr, tbody{
        secondQuestionValues: [0.73,0.59,0.65,0.78],
        thirdQuestionValues: [0.77,0.67,0.62,0.79],
        fourthQuestionValues: [0.74,0.59,0.60,0.8],
-       fifthQuestionValues: [0.8,0.67,0.65,0.79]
+       fifthQuestionValues: [0.8,0.67,0.65,0.79],
+
+       AllCronbachArray:[[0.71,0.62,0.62,0.79],[0.73,0.59,0.65,0.78],[0.77,0.67,0.62,0.79],[0.74,0.59,0.60,0.8],[0.8,0.67,0.65,0.79]]
         },
         watch: {
     dialog (val) {
@@ -486,8 +489,8 @@ tr, tbody{
             Redirect: function (){
             var that = this;
             qindex = that.questionIndex;
-            console.log(qindex);
-            if(qindex === 5){
+            
+            if(qindex === quiz.questions.length+1){
                 setTimeout(function(){window.location='https://sync0n.github.io/course_desc.html'},30000);
             }
            // 
@@ -539,37 +542,73 @@ tr, tbody{
       
       return [this.firstQuestionValues,this.secondQuestionValues,this.thirdQuestionValues,this.fourthQuestionValues,this.fifthQuestionValues];
     },
-    FilterFirst: function() {
-      //let repliesArray1 =  {'one':this.userAudial[0], 'two':this.userAudial[1],'three':this.userAudial[2],'four':this.userAudial[3],'five':this.userAudial[4]};
-           // return repliesArray1.filter(function(val) {
-            //   return val ===1});
-var repliesMegaArray = [this.userAudial[0],this.userAudial[1],this.userAudial[2],this.userAudial[3],this.userAudial[4]];
-if (repliesMegaArray[0] === 1) {
-  var firstQAlpha =  firstQuestionValues[1];
+
+
+
+
+
+    CalculateResults: function() {
+      var that = this;
+            let qindex = that.questionIndex;
+            let replies = that.userAudial;
+            let crArray =  that.AllCronbachArray;
+
+            let audialCRValues = [];
+            let visualCRValues = [];
+            let kinesteticalCRValues = [];
+/*GET INDEXES OF REPLIES IN EACH DIMENSION */
+if(qindex === that.quiz.questions.length){
+            let AudialValueIndexes = replies.flatMap((reply, i) => reply === 1 ? i : []);
+            console.log('first replies indexes are ' + AudialValueIndexes);
+
+            let VisualValueIndexes = replies.flatMap((reply, i) => reply === 2 ? i : []);
+            console.log('second replies indexes are ' + VisualValueIndexes);
+
+            let KinesteticalValueIndexes = replies.flatMap((reply, i) => reply === 3 ? i : []);
+            console.log('third replies indexes are ' + KinesteticalValueIndexes);
+
+
+
+/* SETTING UP ARRAYS OF ALL  CR VALUES ON EACH DIMENSION*/
+            AudialValueIndexes.forEach(element => {
+             audialCRValues.push(crArray[element][replies[element]]);
+              console.log('audial replies CR values are: ' + audialCRValues);
+            });
+            VisualValueIndexes.forEach(element => {
+              visualCRValues.push(crArray[element][replies[element]]);
+              console.log('visual replies CR values are: ' + visualCRValues);
+            });
+            KinesteticalValueIndexes.forEach(element => {
+              kinesteticalCRValues.push(crArray[element][replies[element]]);
+              console.log('kinestetical replies CR values are: ' + kinesteticalCRValues);
+            });
+
+
+/*SUMMING SIGMAS UP ON EACH DIMENSION */
+let AudialTotal =  audialCRValues.reduce((a, b) => a + b, 0);
+let VisualTotal = visualCRValues.reduce((a, b) => a + b, 0);
+let KinesteticalTotal = kinesteticalCRValues.reduce((a, b) => a + b, 0);
+
+console.log('current state of audialCRValues is: ' +  AudialTotal);
+
+console.log('current state of visualCRValues is: ' +  VisualTotal);
+
+console.log('current state of kinesteticalCRValues is: ' +  KinesteticalTotal);
+
+var LearningStyleValue;
+/* */
+if (AudialTotal > VisualTotal && AudialTotal > KinesteticalTotal) {
+ LearningStyleValue = 'Audial';
+ }
+ else if (VisualTotal > AudialTotal && VisualTotal > KinesteticalTotal) {
+  LearningStyleValue = 'Visual';
 }
-if (repliesMegaArray[0] === 2) {
-  var firstQAlpha =  firstQuestionValues[1];
+ else if (KinesteticalTotal > VisualTotal && KinesteticalTotal > AudialTotal) {
+  LearningStyleValue = 'Kinestetical';
+ }
+ document.getElementById("learnig_style_value").innerHTML = LearningStyleValue;
+}          
 }
-if (repliesMegaArray[0] === 3) {
-  var firstQAlpha =  firstQuestionValues[1];
-}
-/*
-elseif(repliesMegaArray[0] === 2){var firstQAlpha =  firstQuestionValues[2] }
-elseif(repliesMegaArray[0] === 3){ var firstQAlpha =  firstQuestionValues[3] }
-else{ var firstQAlpha =  'error' };
-*/
-return firstQAlpha;
-          },
-    FinalResult: function () {
-      let repliesArray =  {'one':this.userAudial[0], 'two':this.userAudial[1],'three':this.userAudial[2],'four':this.userAudial[3],'five':this.userAudial[4]};
-      let AudialValues;
-      let VisualValues;
-      let KinestValues;
-      
-      let alphaValues = [this.firstQuestionValues[this.userAudial[0]],this.secondQuestionValues[this.userAudial[1]]];
-      //var result = repliesArray.filter(reply => reply = 1);
-       return repliesArray['one'];
-    }
     //Methods end here
           },
 
